@@ -11,18 +11,16 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 
-const val API_KEY = "bd4c3d63d5bd5b1ff6e4ee31a5283a0f"
+const val API_KEY = "d6f0502abed14b4f855220123201505"
 
-//http://api.weatherstack.com/current?access_key=bd4c3d63d5bd5b1ff6e4ee31a5283a0f&query=New_York&Lang=en
+//https://api.weatherapi.com/v1/current.json?q=London&key=d6f0502abed14b4f855220123201505
 
 interface WeatherStackApiService {
 
-    @GET
+    @GET("current.json")
     fun getCurrentWeather (
-        @Query("query")location: String,
-        @Query("lang") languageCode: String = "en"
-
-
+        @Query("q")location: String
+        //@Query("lang") languageCode: String = "en"
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
@@ -31,12 +29,14 @@ interface WeatherStackApiService {
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("access_key", API_KEY)
+                    .addQueryParameter("key", API_KEY)
                     .build()
                 val request = chain.request()
                     .newBuilder()
                     .url(url)
                     .build()
+
+                println(url)
 
                 return@Interceptor chain.proceed(request)
             }
@@ -47,7 +47,7 @@ interface WeatherStackApiService {
 
             return  Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("http://api.weatherstack.com/")
+                .baseUrl("https://api.weatherapi.com/v1/")
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
