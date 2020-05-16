@@ -1,6 +1,6 @@
-package com.bombadu.forecastmvvm.data
+package com.bombadu.forecastmvvm.data.network
 
-import com.bombadu.forecastmvvm.data.response.CurrentWeatherResponse
+import com.bombadu.forecastmvvm.data.network.response.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -24,12 +24,16 @@ interface WeatherStackApiService {
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
-        operator fun invoke(): WeatherStackApiService {
+        operator fun invoke(
+            connectivirtInterceptor: ConnectivityInterceptor
+        ): WeatherStackApiService {
             val requestInterceptor = Interceptor { chain->
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("key", API_KEY)
+                    .addQueryParameter("key",
+                        API_KEY
+                    )
                     .build()
                 val request = chain.request()
                     .newBuilder()
@@ -43,6 +47,7 @@ interface WeatherStackApiService {
 
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivirtInterceptor)
                 .build()
 
             return  Retrofit.Builder()

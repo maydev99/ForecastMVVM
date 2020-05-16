@@ -1,4 +1,4 @@
-package com.bombadu.forecastmvvm.data.response
+package com.bombadu.forecastmvvm.data.db.entity
 
 
 import com.google.gson.annotations.SerializedName

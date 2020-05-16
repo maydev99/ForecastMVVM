@@ -1,5 +1,7 @@
-package com.bombadu.forecastmvvm.data.response
+package com.bombadu.forecastmvvm.data.network.response
 
+import com.bombadu.forecastmvvm.data.db.entity.CurrentWeatherEntry
+import com.bombadu.forecastmvvm.data.db.entity.Location
 import com.google.gson.annotations.SerializedName
 
 
